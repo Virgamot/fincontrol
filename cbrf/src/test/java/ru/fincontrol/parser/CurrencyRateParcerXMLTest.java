@@ -14,14 +14,11 @@ class CurrencyRateParcerXMLTest {
 
     @Test
     void parseTest() throws URISyntaxException, IOException {
-
         var parser = new CurrencyRateParcerXML();
         var uri = ClassLoader.getSystemResource("cbrf_rates.xml").toURI();
         var ratesXml = Files.readString(Path.of(uri), StandardCharsets.UTF_8);
 
         var rates = parser.parse(ratesXml);
-
         assertThat(rates.size()).isEqualTo(34);
-
     }
 }
