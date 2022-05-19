@@ -1,0 +1,9 @@
+app:
+  cache:
+    size: 365
+  rest:
+    api:
+      prefix: /api
+
+cbr:
+  url: "https://cbr.ru/scripts/XML_daily.asp"
