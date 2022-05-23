@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CurrencyRateService {
     public static final String DATE_FORMAT = "dd/MM/yyyy";
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     private final CbrRequester cbrRequester;
     private final CurrencyRateParcer currencyRateParcer;
