@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static ru.fincontrol.services.CurrencyRateService.DATE_TIME_FORMATTER;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -39,7 +39,6 @@ class CurrencyRateControllerTest {
     @Test
     @DirtiesContext
     void getCurrencyRateTest() throws Exception {
-
         var currency = "EUR";
         var date = "01-01-2022";
 
@@ -54,9 +53,27 @@ class CurrencyRateControllerTest {
                 .getResponseBody()
                 .blockLast();
 
-
         assertThat(result).isEqualTo("{\"numCode\":\"978\",\"charCode\":\"EUR\",\"nominal\":\"1\",\"name\":\"Евро\",\"value\":\"65,8166\"}");
+    }
 
+    @Test
+    @DirtiesContext
+    void cacheRatesTest() throws Exception {
+        prepareCbrRequestMock(null);
+
+        var currency = "EUR";
+        var date = "01-01-2022";
+
+        webTestClient.get().uri(String.format("/api/v1/currencyRate/%s/%s",currency,date)).exchange().expectStatus().isOk();
+        webTestClient.get().uri(String.format("/api/v1/currencyRate/%s/%s",currency,date)).exchange().expectStatus().isOk();
+
+        currency = "USD";
+        webTestClient.get().uri(String.format("/api/v1/currencyRate/%s/%s",currency,date)).exchange().expectStatus().isOk();
+
+        date = "03-03-2021";
+        webTestClient.get().uri(String.format("/api/v1/currencyRate/%s/%s", currency, date)).exchange().expectStatus().isOk();
+
+        verify(cbrRequester, times(2)).getRatesAsXml(any());
     }
 
     private void prepareCbrRequestMock(String date) throws URISyntaxException, IOException {
