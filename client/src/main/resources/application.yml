@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+management:
+  server:
+    port: 8090
+  endpoints:
+    enable-by-default: false
+  endpoint:
+    helth:
+      enable: true
+      probes:
+        enable: true
+
+app:
+  rest:
+    api:
+      prefix: /api
