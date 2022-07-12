@@ -14,10 +14,10 @@ import java.time.format.DateTimeFormatter;
 @Service("cbrf")
 @RequiredArgsConstructor
 @Slf4j
-public class CbrfClient implements  SourceClient{
+public class CbrfClient implements SourceClient {
 
     public static final String DATE_FORMAT = "dd-MM-yyyy";
-    private static  final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     private final CbrfClientConfig config;
     private final HttpClient httpClient;
@@ -25,8 +25,21 @@ public class CbrfClient implements  SourceClient{
 
     @Override
     public Mono<CurrencyRate> getCurrencyRate(String currency, LocalDate date) {
-        log.info("getCurrencyRate:{}, date:{}",currency,date);
-        //TODO
-        return null;
+        log.info("getCurrencyRate:{}, date:{}", currency, date);
+        var urlWithParams = String.format("%s/%s/%s", config.getUrl(), currency, DATE_TIME_FORMATTER.format(date));
+
+        try {
+            return httpClient.performRequest(urlWithParams).map(this::parse);
+        } catch (Exception ex) {
+            throw new RuntimeException("Can't get currency rate, currency:" + currency + ", date:" + date);
+        }
+    }
+
+    private CurrencyRate parse(String rateAsString) {
+        try {
+            return objectMapper.readValue(rateAsString, CurrencyRate.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Can't parse string:" + rateAsString);
+        }
     }
 }
