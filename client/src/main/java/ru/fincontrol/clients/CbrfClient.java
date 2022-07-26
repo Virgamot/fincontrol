@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import ru.fincontrol.config.CbrfClientConfig;
+import ru.fincontrol.exceptions.SourceClientException;
 import ru.fincontrol.model.CurrencyRate;
 
 import java.time.LocalDate;
@@ -31,7 +32,7 @@ public class CbrfClient implements SourceClient {
         try {
             return httpClient.performRequest(urlWithParams).map(this::parse);
         } catch (Exception ex) {
-            throw new RuntimeException("Can't get currency rate, currency:" + currency + ", date:" + date);
+            throw new SourceClientException("Can't get currency rate, currency:" + currency + ", date:" + date);
         }
     }
 
@@ -39,7 +40,7 @@ public class CbrfClient implements SourceClient {
         try {
             return objectMapper.readValue(rateAsString, CurrencyRate.class);
         } catch (Exception e) {
-            throw new RuntimeException("Can't parse string:" + rateAsString);
+            throw new SourceClientException("Can't parse string:" + rateAsString);
         }
     }
 }

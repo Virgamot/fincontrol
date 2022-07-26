@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import ru.fincontrol.exceptions.HttpClientException;
 
 @Service
 @Slf4j
@@ -29,7 +30,7 @@ public class HttpClientImpl implements HttpClient {
                     .doOnNext(val -> log.info("val:{}", val));
 
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new HttpClientException(e.getMessage());
         }
     }
 }
