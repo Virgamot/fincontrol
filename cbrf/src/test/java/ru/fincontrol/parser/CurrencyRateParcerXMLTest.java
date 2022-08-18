@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CurrencyRateParcerXMLTest {
 
@@ -19,6 +19,6 @@ class CurrencyRateParcerXMLTest {
         var ratesXml = Files.readString(Path.of(uri), StandardCharsets.UTF_8);
 
         var rates = parser.parse(ratesXml);
-        assertThat(rates.size()).isEqualTo(34);
+        assertThat(rates).hasSize(34);
     }
 }
