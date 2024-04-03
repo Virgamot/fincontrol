@@ -40,6 +40,7 @@
     <modules>
         <module>cbrf</module>
         <module>client</module>
+        <module>moex</module>
     </modules>
 
     <dependencies>
