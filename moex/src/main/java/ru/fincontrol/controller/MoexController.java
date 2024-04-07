@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import ru.fincontrol.model.CurrencyRate;
+import ru.fincontrol.model.SecurityRate;
 
 import java.time.LocalDate;
 
@@ -20,6 +21,11 @@ public class MoexController {
     public Mono<CurrencyRate> getCurrencyRate(@PathVariable("currency") String currency,
                                               @DateTimeFormat(pattern = "dd-MM-yyyy") @PathVariable("date") LocalDate date) {
         log.info("getCurrencyRate, currency:{}, date:{}", currency, date);
+        return Mono.empty();
+    }
+
+    @GetMapping("/securities/{ticket}")
+    public Mono<SecurityRate> getSecurityRate(@PathVariable("ticket") String ticket){
         return Mono.empty();
     }
 }
