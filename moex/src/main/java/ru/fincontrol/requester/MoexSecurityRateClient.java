@@ -5,9 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
-@FeignClient(value = "moex",url = "https://iss.moex.com/iss/engines/stock/markets/shares/securities")
+@FeignClient(value = "moex",url = "https://iss.moex.com")
 public interface MoexSecurityRateClient {
 
-    @GetMapping("/{ticket}?iss.meta=off")
+    @GetMapping("/iss/engines/stock/markets/shares/securities/{ticket}?iss.meta=off")
     String getSecurity(@PathVariable("ticket") String ticket);
+
+    @GetMapping("/iss/statistics/engines/futures/markets/indicativerates/securities/{rate}")
+    String getExchangeRate(@PathVariable("rate") String rate);
 }
