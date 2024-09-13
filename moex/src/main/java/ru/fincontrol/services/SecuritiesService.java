@@ -3,6 +3,7 @@ package ru.fincontrol.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.fincontrol.model.ExchangeRate;
 import ru.fincontrol.model.SecurityRate;
 import ru.fincontrol.requester.MoexSecurityRateClient;
 
@@ -17,5 +18,11 @@ public class SecuritiesService {
         String securityInfo = securityRateClient.getSecurity(ticket);
         log.info(securityInfo);
         return SecurityRate.builder().ticket(ticket).value(securityInfo).build();
+    }
+
+    public ExchangeRate getRate(String rate){
+        String rateInfo = securityRateClient.getExchangeRate(rate);
+        log.info(rateInfo);
+        return ExchangeRate.builder().name(rate).value(rateInfo).build();
     }
 }
