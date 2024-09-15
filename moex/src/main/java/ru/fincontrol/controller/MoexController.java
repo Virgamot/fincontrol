@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import ru.fincontrol.model.CurrencyRate;
+import ru.fincontrol.model.ExchangeRate;
 import ru.fincontrol.model.SecurityRate;
 import ru.fincontrol.services.SecuritiesService;
 
@@ -28,6 +29,13 @@ public class MoexController {
         log.info("getCurrencyRate, currency:{}, date:{}", currency, date);
         //TODO: not implemented
         return Mono.empty();
+    }
+
+    @GetMapping("/exchangeRate/{rate}")
+    public Mono<ExchangeRate> getExchangeRate(@PathVariable("rate") String rate) {
+        log.info("getExchangeRate, rate:{}", rate);
+        var exchangeRateInfo = securitiesService.getRate(rate);
+        return Mono.just(exchangeRateInfo);
     }
 
     @GetMapping("/securities/{ticket}")
